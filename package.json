@@ -1,7 +1,7 @@
 {
   "name": "osagai-map",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Google maps web component with Osagai",
   "repository": "github:HenriqueLimas/osagai-map",
   "homepage": "https://github.com/HenriqueLimas/osagai-map",
   "main": "dist/osagai-map.js",
@@ -15,7 +15,7 @@
     "build": "microbundle build --target=browser --external=none",
     "release": "npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push origin $npm_package_version && npm publish"
   },
-  "keywords": [],
+  "keywords": ["webcomponents", "osagai", "google-maps", "maps"],
   "author": "",
   "license": "ISC",
   "dependencies": {
