@@ -12,7 +12,9 @@ const scriptCallback = new Promise(function(resolve) {
 
 function OsagaiMap({ element }) {
   const apiKey = element.getAttribute("api-key");
-  const scriptPromise = loadScript(apiKey);
+  const version = element.getAttribute("version");
+  const libraries = element.getAttribute("libraries");
+  const scriptPromise = loadScript(apiKey, version, libraries);
   attachShadow(element);
 
   onConnected(element, function mapConnected() {
@@ -47,13 +49,14 @@ function OsagaiMap({ element }) {
 
 define("osagai-map", OsagaiMap);
 
-function loadScript(apiKey) {
+function loadScript(apiKey, version, libraries) {
   if (isScriptCalled) {
     return scriptCallback;
   }
 
   const script = document.createElement("script");
-  const url = `${API_URL}v=${API_VERSION}&libraries=${API_LIBRARIES}&key=${apiKey}&callback=__initGoogleMapsApi`;
+  const url = `${API_URL}v=${version || API_VERSION}&libraries=${libraries ||
+    API_LIBRARIES}&key=${apiKey}&callback=__initGoogleMapsApi`;
   script.src = url;
   document.head.appendChild(script);
   isScriptCalled = true;
