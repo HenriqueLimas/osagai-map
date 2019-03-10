@@ -27,13 +27,16 @@ function OsagaiMap({ element }) {
     return `
       <style>
         :host {
+          position: relative;
           display: block;
-          width: 100%;
           height: 100%;
         }
-        div {
-          width: 100%;
-          height: 100%;
+        #map {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
         }
       </style>
 
@@ -182,10 +185,10 @@ function setZoom(element, value) {
   element.setAttribute("zoom", value);
 }
 function mapType(element) {
-  return element.getAttribute("mapType");
+  return element.getAttribute("map-type");
 }
 function setMapType(element, value) {
-  element.setAttribute("mapType", value);
+  element.setAttribute("map-type", value);
 }
 
 function dispatch(element, name) {
@@ -220,19 +223,19 @@ function getBooleanAttribute(element, attrName) {
 function getMapOptions(element) {
   return {
     zoom: zoom(element),
-    tilt: getBooleanAttribute(element, "noAutoTilt") ? 0 : 45,
-    mapTypeId: mapType(element),
-    disableDefaultUI: getBooleanAttribute(element, "disableDefaultUi"),
+    tilt: getBooleanAttribute(element, "no-auto-tilt") ? 0 : 45,
+    mapTypeId: mapType(element) || undefined,
+    disableDefaultUI: getBooleanAttribute(element, "disable-default-ui"),
     mapTypeControl:
-      !getBooleanAttribute(element, "disableDefaultUi") &&
-      !getBooleanAttribute(element, "disableMapTypeControl"),
+      !getBooleanAttribute(element, "disable-default-ui") &&
+      !getBooleanAttribute(element, "disable-map-type-control"),
     streetViewControl:
-      !getBooleanAttribute(element, "disableDefaultUi") &&
-      !getBooleanAttribute(element, "disableStreetViewControl"),
-    disableDoubleClickZoom: getBooleanAttribute(element, "disableZoom"),
-    scrollwheel: !getBooleanAttribute(element, "disableZoom"),
-    styles: element.getAttribute("styles"),
-    maxZoom: Number(element.getAttribute("maxZoom")),
-    minZoom: Number(element.getAttribute("minZoom"))
+      !getBooleanAttribute(element, "disable-default-ui") &&
+      !getBooleanAttribute(element, "disable-street-view-control"),
+    disableDoubleClickZoom: getBooleanAttribute(element, "disable-zoom"),
+    scrollwheel: !getBooleanAttribute(element, "disable-zoom"),
+    styles: element.getAttribute("styles") || undefined,
+    maxZoom: Number(element.getAttribute("max-zoom")) || undefined,
+    minZoom: Number(element.getAttribute("min-zoom")) || undefined
   };
 }
