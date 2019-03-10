@@ -1,5 +1,5 @@
 import { define } from "osagai";
-import { onConnected } from "osagai/lifecycles";
+import { onConnected, onAttributeChanged } from "osagai/lifecycles";
 import { attachShadow, SHADOW_DOM } from "osagai/dom";
 
 const API_URL = "https://maps.googleapis.com/maps/api/js?";
@@ -9,6 +9,8 @@ let isScriptCalled = false;
 const scriptCallback = new Promise(function(resolve) {
   window.__initGoogleMapsApi = resolve;
 });
+
+OsagaiMap.observedAttributes = ["click-events", "drag-events", "mouse-events"];
 
 function OsagaiMap({ element }) {
   const apiKey = element.getAttribute("api-key");
@@ -23,6 +25,20 @@ function OsagaiMap({ element }) {
         initMap(element);
       })
       .catch(console.error);
+  });
+
+  onAttributeChanged(element, function mapAttributeChanged(attribute) {
+    switch (attribute.name) {
+      case "click-events":
+        clickEventsChanged(element);
+        break;
+      case "drag-events":
+        dragEventsChanged(element);
+        break;
+      case "mouse-events":
+        mouseEventsChanged(element);
+        break;
+    }
   });
 
   return function() {
@@ -144,9 +160,53 @@ function addMapListeners(element) {
     }
   );
 
-  // TODO: implement click/drag/mouse events
+  clickEventsChanged(element);
+  dragEventsChanged(element);
+  mouseEventsChanged(element);
 
   idleEvent(element);
+}
+
+function clickEventsChanged(element) {
+  if (map(element)) {
+    if (clickEvents(element)) {
+      forwardEvent(element, "click");
+      forwardEvent(element, "dblclick");
+      forwardEvent(element, "rightclick");
+    } else {
+      clearListener(element, "click");
+      clearListener(element, "dblclick");
+      clearListener(element, "rightclick");
+    }
+  }
+}
+
+function dragEventsChanged(element) {
+  if (map(element)) {
+    if (dragEvents(element)) {
+      forwardEvent(element, "drag");
+      forwardEvent(element, "dragend");
+      forwardEvent(element, "dragstart");
+    } else {
+      clearListener(element, "drag");
+      clearListener(element, "dragend");
+      clearListener(element, "dragstart");
+    }
+  }
+}
+
+function mouseEventsChanged(element) {
+  if (map(element)) {
+    if (mouseEvents(element)) {
+      forwardEvent(element, "mousemove");
+      forwardEvent(element, "mouseout");
+      forwardEvent(element, "mouseover");
+    } else {
+      clearListener(element, "mousemove");
+      clearListener(element, "mouseout");
+      clearListener(element, "mouseover");
+    }
+  }
 }
 
 function idleEvent(element) {
@@ -192,6 +252,15 @@ function mapType(element) {
 }
 function setMapType(element, value) {
   element.setAttribute("map-type", value);
+}
+function clickEvents(element) {
+  return getBooleanAttribute(element, "click-events");
+}
+function dragEvents(element) {
+  return getBooleanAttribute(element, "drag-events");
+}
+function mouseEvents(element) {
+  return getBooleanAttribute(element, "mouse-events");
 }
 
 function dispatch(element, name) {
