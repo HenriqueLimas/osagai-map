@@ -3,7 +3,7 @@ import { onConnected } from "osagai/lifecycles";
 import { attachShadow, SHADOW_DOM } from "osagai/dom";
 
 const API_URL = "https://maps.googleapis.com/maps/api/js?";
-const API_VERSION = "3.exp";
+const API_VERSION = "3.34";
 const API_LIBRARIES = "drawing,geometry,places,visualization";
 let isScriptCalled = false;
 const scriptCallback = new Promise(function(resolve) {
