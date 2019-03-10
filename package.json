@@ -12,6 +12,7 @@
     "start": "microbundle watch --target=browser --external=none",
     "prettier": "prettier {src/**/*.js,README.md}",
     "format": "npm run prettier -- --write",
+    "docs": "documentation readme src/** --section=API",
     "build": "microbundle build --target=browser --external=none",
     "release": "npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push origin $npm_package_version && npm publish"
   },
@@ -22,6 +23,7 @@
     "osagai": "^0.3.2"
   },
   "devDependencies": {
+    "documentation": "^9.3.0",
     "microbundle": "^0.11.0",
     "prettier": "^1.16.4"
   }

@@ -12,6 +12,26 @@ const scriptCallback = new Promise(function(resolve) {
 
 OsagaiMap.observedAttributes = ["click-events", "drag-events", "mouse-events"];
 
+/**
+ * Custom element for rendering a map using [Google Maps API](https://developers.google.com/maps/documentation/)
+ *
+ * @name osagai-map
+ * @param {String} api-key API key to be used on Google Maps. [Get API Key docs](https://developers.google.com/maps/documentation/javascript/get-api-key)
+ * @param {String} [version=3.34] Version of the Google Maps API
+ * @param {String} [libraries=drawing,geometry,places,visualization] Libraries to use on the Google Maps API, separated by ","
+ * @param {Number} latitude Latitude to show in the map
+ * @param {Number} longitude Longitude to show in the map
+ * @param {Number} [zoom=undefined] Zoom to use in the map
+ * @param {Boolean} [no-auto-tilt=false] Don't use a tilt
+ * @param {String} map-type Type of the map to use (roadmap|satellite|hybrid|terrain). [mapTypes docs](https://developers.google.com/maps/documentation/javascript/maptypes)
+ * @param {Boolean} [disable-default-ui=false] Disable default UIs
+ * @param {Boolean} [disable-map-type-control=false] Disable the map type controls
+ * @param {Boolean} [disable-street-view-control=false] Disable the street-view controls
+ * @param {Boolean} [disable-zoom=false] Disable zoom capabilities (Double click and scroll whell)
+ * @param {Number} [max-zoom=undefined] Max zoom allowed
+ * @param {Number} [min-zoom=undefined] Min zoom allowed
+ *
+ */
 function OsagaiMap({ element }) {
   const apiKey = element.getAttribute("api-key");
   const version = element.getAttribute("version");
@@ -217,7 +237,7 @@ function idleEvent(element) {
   }
 }
 
-/**
+/*
  * GETTERS/SETTERS
  */
 function listeners(element) {
@@ -306,7 +326,6 @@ function getMapOptions(element) {
       !getBooleanAttribute(element, "disable-street-view-control"),
     disableDoubleClickZoom: getBooleanAttribute(element, "disable-zoom"),
     scrollwheel: !getBooleanAttribute(element, "disable-zoom"),
-    styles: element.getAttribute("styles") || undefined,
     maxZoom: Number(element.getAttribute("max-zoom")) || undefined,
     minZoom: Number(element.getAttribute("min-zoom")) || undefined
   };
