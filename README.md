@@ -12,7 +12,7 @@ npm install osagai-map
 Or import from unpkg
 
 ```html
-<script type="module" src="https://unpkg.com/lit-osagai/osagai.mjs"></script>
+<script type="module" src="https://unpkg.com/osagai-map/dist/osagai-map.mjs"></script>
 ```
 
 ## Usage
