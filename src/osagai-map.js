@@ -2,6 +2,8 @@ import { define } from "osagai";
 import { onConnected, onAttributeChanged } from "osagai/lifecycles";
 import { attachShadow, SHADOW_DOM } from "osagai/dom";
 
+import { getBooleanAttribute, dispatch } from "./utils";
+
 const API_URL = "https://maps.googleapis.com/maps/api/js?";
 const API_VERSION = "3.34";
 const API_LIBRARIES = "drawing,geometry,places,visualization";
@@ -151,8 +153,20 @@ function loadKml(element) {
   }
 }
 
-function updateMarkers() {
-  console.log("Not implemented yet");
+function updateMarkers(element) {
+  const newMarkers = Array.prototype.slice.call(
+    element.querySelectorAll("osagai-map-marker")
+  );
+
+  const added = newMarkers.filter(function(marker) {
+    return !element.markers || element.markers.indexOf(marker) === -1;
+  });
+
+  if (added.length === 0) {
+    return;
+  }
+
+  setMarkers(element, newMarkers);
 }
 
 function addMapListeners(element) {
@@ -237,6 +251,15 @@ function idleEvent(element) {
   }
 }
 
+function setMarkers(element, markers) {
+  element.markers = [];
+
+  markers.forEach(function(marker) {
+    marker.map = map(element);
+    element.markers.push(marker);
+  });
+}
+
 /*
  * GETTERS/SETTERS
  */
@@ -283,20 +306,12 @@ function mouseEvents(element) {
   return getBooleanAttribute(element, "mouse-events");
 }
 
-function dispatch(element, name) {
-  element.dispatchEvent(createEvent(name));
-}
-
-function createEvent(name, data) {
-  return new CustomEvent("osagai-map-" + name, { detail: data });
-}
-
 function forwardEvent(element, name) {
   listeners(element)[name] = google.maps.event.addListener(
     map(element),
     name,
     function eventListenerCallback(event) {
-      element.dispatchEvent(createEvent(name, event));
+      dispatch(element, name, event);
     }
   );
 }
@@ -305,11 +320,6 @@ function clearListener(element, name) {
     google.maps.event.removeListener(listeners(element)[name]);
     listeners(element)[name] = null;
   }
-}
-
-function getBooleanAttribute(element, attrName) {
-  const attr = element.getAttribute(attrName);
-  return attr === "true" || attr === "" ? true : false;
 }
 
 function getMapOptions(element) {
