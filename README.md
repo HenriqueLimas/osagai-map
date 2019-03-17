@@ -21,10 +21,13 @@ Or import from unpkg
 ```html
 <osagai-map
   api-key="<GOOGLE_MAPS_API_KEY>"
-  latitude="52.532308"
-  longitude="13.4511303"
-  zoom="13"
-></osagai-map>
+  latitude="37.4029937"
+  longitude="-122.1811813"
+  zoom="13">
+    <osagai-map-marker latitude="37.4029937" longitude="-122.1811813">
+      Hello, I am a marker
+    </osagai-map-marker>
+</osagai-map>
 ```
 
 * * *
@@ -37,6 +40,8 @@ Or import from unpkg
 
 -   [osagai-map](#osagai-map)
     -   [Parameters](#parameters)
+-   [osagai-map-marker](#osagai-map-marker)
+    -   [Parameters](#parameters-1)
 
 ### osagai-map
 
@@ -58,3 +63,16 @@ Custom element for rendering a map using [Google Maps API](https://developers.go
 -   `disable-zoom` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Disable zoom capabilities (Double click and scroll whell) (optional, default `false`)
 -   `max-zoom` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Max zoom allowed (optional, default `undefined`)
 -   `min-zoom` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Min zoom allowed (optional, default `undefined`)
+
+### osagai-map-marker
+
+Custom element for rendering a marker in a Google map. [Marker documentation](https://developers.google.com/maps/documentation/javascript/markers)
+
+#### Parameters
+
+-   `latitude` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Latitude to show in the map
+-   `longitude` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** Longitude to show in the map
+-   `title` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Title of the marker that will appear as a tooltip (optional, default `undefined`)
+-   `animation` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Animation to exhibit dynamic movement to the marker. Values supported from google maps api. [Animate marker docs](https://developers.google.com/maps/documentation/javascript/markers#animate) (optional, default `undefined`)
+-   `hidden` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Hide the marker (optional, default `false`)
+-   `label` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** A marker label that appear inside a marker (optional, default `undefined`)

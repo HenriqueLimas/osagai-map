@@ -12,7 +12,7 @@
     "start": "microbundle watch --target=browser --external=none",
     "prettier": "prettier {src/**/*.js,README.md}",
     "format": "npm run prettier -- --write",
-    "docs": "documentation readme src/** --section=API",
+    "docs": "documentation --config documentation.yml readme src/** --section=API",
     "build": "microbundle build --target=browser --external=none",
     "release": "npm run build && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push origin $npm_package_version && npm publish"
   },
